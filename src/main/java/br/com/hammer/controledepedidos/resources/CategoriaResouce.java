@@ -17,9 +17,14 @@ public class CategoriaResouce {
 	@Autowired
 	private CategoriaService service;
 
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	@RequestMapping(value="/busca/{id}", method=RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		Categoria categoria = service.buscar(id);
 		return ResponseEntity.ok().body(categoria);
+	}
+
+	@RequestMapping(value="/grava/{categoria}", method=RequestMethod.POST)
+	public void save(@PathVariable String categoria) {
+		service.save(categoria);
 	}
 }
