@@ -8,14 +8,19 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.hammer.controledepedidos.domain.Categoria;
+import br.com.hammer.controledepedidos.domain.Produto;
 import br.com.hammer.controledepedidos.repositories.CategoriaRepository;
+import br.com.hammer.controledepedidos.repositories.ProdutoRepository;
 
 @SpringBootApplication
 public class IsApplication implements CommandLineRunner {
 
 	@Autowired
-	private CategoriaRepository repository;
+	private CategoriaRepository categoriaRepository;
 
+	@Autowired
+	private ProdutoRepository produtoRepository;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(IsApplication.class, args);
 	}
@@ -24,7 +29,19 @@ public class IsApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Categoria higiene = new Categoria(null, "Higiene Íntima");
 		Categoria bazar = new Categoria(null, "Bazar");
+
+		Produto pc = new Produto(null, "Computador", 2000.0 );
+		Produto printer = new Produto(null, "Impressora", 400.0 );
+		Produto mouse = new Produto(null, "Mouse", 120.0 );
 		
-		repository.save(Arrays.asList(higiene, bazar));
+		higiene.getProdutos().addAll(Arrays.asList(pc, printer, mouse));
+		bazar.getProdutos().addAll(Arrays.asList(printer));
+
+		pc.getCategorias().addAll(Arrays.asList(higiene));
+		printer.getCategorias().addAll(Arrays.asList(bazar, higiene));
+		mouse.getCategorias().addAll(Arrays.asList(higiene));
+
+		categoriaRepository.save(Arrays.asList(higiene, bazar));
+		produtoRepository.save(Arrays.asList(pc, printer, mouse));
 	}
 }
