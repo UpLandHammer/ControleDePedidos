@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.hammer.controledepedidos.domain.Categoria;
 import br.com.hammer.controledepedidos.repositories.CategoriaRepository;
+import br.com.hammer.controledepedidos.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -15,7 +16,12 @@ public class CategoriaService {
 	private CategoriaRepository repository;
 
 	public Categoria buscar(Integer id) {
-		return repository.findOne(id);
+		Categoria dados = repository.findOne(id);
+			if(dados == null) {
+				throw new ObjectNotFoundException("Objeto não encontrado! Id:" + id 
+												+", Tipo: " + Categoria.class.getName());
+			}
+		return dados;
 	}
 
 	public void save(String nomeCategoria) {
