@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.hammer.controledepedidos.domain.Categoria;
 import br.com.hammer.controledepedidos.domain.Cidade;
+import br.com.hammer.controledepedidos.domain.Cliente;
+import br.com.hammer.controledepedidos.domain.Endereco;
 import br.com.hammer.controledepedidos.domain.Estado;
 import br.com.hammer.controledepedidos.domain.Produto;
+import br.com.hammer.controledepedidos.domain.enums.TipoCliente;
 import br.com.hammer.controledepedidos.repositories.CategoriaRepository;
 import br.com.hammer.controledepedidos.repositories.CidadeRepository;
+import br.com.hammer.controledepedidos.repositories.ClienteRepository;
+import br.com.hammer.controledepedidos.repositories.EnderecoRepository;
 import br.com.hammer.controledepedidos.repositories.EstadoRepository;
 import br.com.hammer.controledepedidos.repositories.ProdutoRepository;
 
@@ -31,7 +36,11 @@ public class IsApplication implements CommandLineRunner {
 	@Autowired
 	private EstadoRepository estadoRepository;
 
-	
+	@Autowired
+	private ClienteRepository clienteRepository;
+
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(IsApplication.class, args);
@@ -68,5 +77,16 @@ public class IsApplication implements CommandLineRunner {
 		
 		estadoRepository.save(Arrays.asList(mg, sp));
 		cidadeRepository.save(Arrays.asList(bhCity, spCity, cmpCity));
+
+		Cliente maria = new Cliente(null, "Maria", "maria@gmail.com", "56689974442", TipoCliente.PESSOAFISICA );
+		maria.getTelefones().addAll(Arrays.asList("+55 11 988776655", "+55 11 987654321"));
+
+		Endereco residencia = new Endereco(null, "Rua Santa Rita", "239", "Casa 2", "Vila Ubirajara", "11850000",maria, bhCity);
+		Endereco trabalho = new Endereco(null, "Av da Saudade", "1500", "Casa 29", "Centro", "11850000",maria, bhCity);
+
+		maria.getEnderecos().addAll(Arrays.asList(residencia, trabalho));
+
+		clienteRepository.save(Arrays.asList(maria));
+		enderecoRepository.save(Arrays.asList(residencia, trabalho));
 	}
 }
