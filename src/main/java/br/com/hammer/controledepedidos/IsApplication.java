@@ -1,5 +1,6 @@
 package br.com.hammer.controledepedidos;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,19 @@ import br.com.hammer.controledepedidos.domain.Cidade;
 import br.com.hammer.controledepedidos.domain.Cliente;
 import br.com.hammer.controledepedidos.domain.Endereco;
 import br.com.hammer.controledepedidos.domain.Estado;
+import br.com.hammer.controledepedidos.domain.PagamentoComBoleto;
+import br.com.hammer.controledepedidos.domain.PagamentoComCartao;
+import br.com.hammer.controledepedidos.domain.Pedido;
 import br.com.hammer.controledepedidos.domain.Produto;
+import br.com.hammer.controledepedidos.domain.enums.EstadoPagamento;
 import br.com.hammer.controledepedidos.domain.enums.TipoCliente;
 import br.com.hammer.controledepedidos.repositories.CategoriaRepository;
 import br.com.hammer.controledepedidos.repositories.CidadeRepository;
 import br.com.hammer.controledepedidos.repositories.ClienteRepository;
 import br.com.hammer.controledepedidos.repositories.EnderecoRepository;
 import br.com.hammer.controledepedidos.repositories.EstadoRepository;
+import br.com.hammer.controledepedidos.repositories.PagamentoRepository;
+import br.com.hammer.controledepedidos.repositories.PedidoRepository;
 import br.com.hammer.controledepedidos.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -41,6 +48,12 @@ public class IsApplication implements CommandLineRunner {
 
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+
+	@Autowired
+	private PedidoRepository pedidoRepository;
+
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(IsApplication.class, args);
@@ -74,7 +87,7 @@ public class IsApplication implements CommandLineRunner {
 
 		mg.getCidades().addAll(Arrays.asList(bhCity));
 		sp.getCidades().addAll(Arrays.asList(spCity, cmpCity));
-		
+
 		estadoRepository.save(Arrays.asList(mg, sp));
 		cidadeRepository.save(Arrays.asList(bhCity, spCity, cmpCity));
 
@@ -88,5 +101,21 @@ public class IsApplication implements CommandLineRunner {
 
 		clienteRepository.save(Arrays.asList(maria));
 		enderecoRepository.save(Arrays.asList(residencia, trabalho));
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		Pedido p1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), maria, residencia);
+		Pedido p2 = new Pedido(null, sdf.parse("10/10/2017 00:00"), maria, trabalho);
+
+		PagamentoComCartao pagamentoComCartao = new PagamentoComCartao(null, EstadoPagamento.QUITADO, p1, 6);
+		p1.setPagamento(pagamentoComCartao);
+
+		PagamentoComBoleto pagamentoComBoleto = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, p2, sdf.parse("20/10/2017 00:00"), null);
+		p2.setPagamento(pagamentoComBoleto);
+
+		maria.getPedidos().addAll(Arrays.asList(p1, p2));
+
+		pedidoRepository.save(Arrays.asList(p1, p2));
+		pagamentoRepository.save(Arrays.asList(pagamentoComCartao, pagamentoComBoleto));
+		
 	}
 }
