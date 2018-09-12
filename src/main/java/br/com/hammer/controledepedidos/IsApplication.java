@@ -13,6 +13,7 @@ import br.com.hammer.controledepedidos.domain.Cidade;
 import br.com.hammer.controledepedidos.domain.Cliente;
 import br.com.hammer.controledepedidos.domain.Endereco;
 import br.com.hammer.controledepedidos.domain.Estado;
+import br.com.hammer.controledepedidos.domain.ItemPedido;
 import br.com.hammer.controledepedidos.domain.PagamentoComBoleto;
 import br.com.hammer.controledepedidos.domain.PagamentoComCartao;
 import br.com.hammer.controledepedidos.domain.Pedido;
@@ -24,6 +25,7 @@ import br.com.hammer.controledepedidos.repositories.CidadeRepository;
 import br.com.hammer.controledepedidos.repositories.ClienteRepository;
 import br.com.hammer.controledepedidos.repositories.EnderecoRepository;
 import br.com.hammer.controledepedidos.repositories.EstadoRepository;
+import br.com.hammer.controledepedidos.repositories.ItemPedidoRepository;
 import br.com.hammer.controledepedidos.repositories.PagamentoRepository;
 import br.com.hammer.controledepedidos.repositories.PedidoRepository;
 import br.com.hammer.controledepedidos.repositories.ProdutoRepository;
@@ -54,6 +56,9 @@ public class IsApplication implements CommandLineRunner {
 
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(IsApplication.class, args);
@@ -116,6 +121,18 @@ public class IsApplication implements CommandLineRunner {
 
 		pedidoRepository.save(Arrays.asList(p1, p2));
 		pagamentoRepository.save(Arrays.asList(pagamentoComCartao, pagamentoComBoleto));
-		
+
+		ItemPedido ip1 = new ItemPedido(p1, pc, 0.00, 1, 2000.00 );
+		ItemPedido ip2 = new ItemPedido(p1, mouse, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(p2, printer, 100.00, 1, 800.00);
+
+		p1.getItens().addAll(Arrays.asList(ip1, ip2));
+		p2.getItens().addAll(Arrays.asList(ip3));
+
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p1.getItens().addAll(Arrays.asList(ip2));
+
+		itemPedidoRepository.save(Arrays.asList(ip1, ip2, ip3));
 	}
 }
