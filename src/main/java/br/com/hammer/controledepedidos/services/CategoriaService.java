@@ -28,4 +28,9 @@ public class CategoriaService {
 		Categoria categoria = new Categoria(null, nomeCategoria);
 		repository.save(Arrays.asList(categoria));
 	}
+
+	public Categoria insert(Categoria obj) {
+		obj.setId(null);
+		return repository.save(obj);
+	}
 }

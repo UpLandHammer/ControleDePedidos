@@ -3,6 +3,7 @@ package br.com.hammer.controledepedidos.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.hammer.controledepedidos.domain.Categoria;
 import br.com.hammer.controledepedidos.domain.Cliente;
 import br.com.hammer.controledepedidos.repositories.ClienteRepository;
 import br.com.hammer.controledepedidos.services.exceptions.ObjectNotFoundException;
