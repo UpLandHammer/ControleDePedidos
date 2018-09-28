@@ -1,6 +1,9 @@
 package br.com.hammer.controledepedidos.resources;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.hammer.controledepedidos.domain.Categoria;
+import br.com.hammer.controledepedidos.dto.CategoriaDTO;
 import br.com.hammer.controledepedidos.services.CategoriaService;
 
 @RestController
@@ -47,4 +51,13 @@ public class CategoriaResouce {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
+		List<Categoria> categoriaList = service.findAll();
+		List<CategoriaDTO> listDTO = categoriaList.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		
+		return ResponseEntity.ok().body(listDTO);
+	}
+
 }
