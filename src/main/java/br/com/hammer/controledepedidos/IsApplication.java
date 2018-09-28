@@ -68,10 +68,17 @@ public class IsApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Categoria higiene = new Categoria(null, "Higiene Íntima");
 		Categoria bazar = new Categoria(null, "Bazar");
+		Categoria eletronicos = new Categoria(null, "Eletronicos");
+		Categoria cama = new Categoria(null, "Cama mesa e banho");
+		Categoria mercearia = new Categoria(null, "Mercearia");
+		Categoria charutaria = new Categoria(null, "Charutaria");
+		Categoria bebidas = new Categoria(null, "Bebidas");
+		Categoria textil = new Categoria(null, "Textil");
 
 		Produto pc = new Produto(null, "Computador", 2000.0 );
 		Produto printer = new Produto(null, "Impressora", 400.0 );
 		Produto mouse = new Produto(null, "Mouse", 120.0 );
+		
 
 		higiene.getProdutos().addAll(Arrays.asList(pc, printer, mouse));
 		bazar.getProdutos().addAll(Arrays.asList(printer));
@@ -80,7 +87,8 @@ public class IsApplication implements CommandLineRunner {
 		printer.getCategorias().addAll(Arrays.asList(bazar, higiene));
 		mouse.getCategorias().addAll(Arrays.asList(higiene));
 
-		categoriaRepository.save(Arrays.asList(higiene, bazar));
+		categoriaRepository.save(Arrays.asList(higiene, bazar, eletronicos, cama, mercearia, charutaria, bebidas, textil));
+		 
 		produtoRepository.save(Arrays.asList(pc, printer, mouse));
 
 		Estado mg = new Estado(null, "Minas Gerais");
