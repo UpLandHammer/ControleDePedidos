@@ -11,7 +11,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.hammer.controledepedidos.domain.Categoria;
-import br.com.hammer.controledepedidos.domain.Cliente;
 import br.com.hammer.controledepedidos.dto.CategoriaDTO;
 import br.com.hammer.controledepedidos.repositories.CategoriaRepository;
 import br.com.hammer.controledepedidos.services.exceptions.DataIntegrityException;
