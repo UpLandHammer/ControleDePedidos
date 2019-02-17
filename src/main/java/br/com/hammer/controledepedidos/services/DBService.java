@@ -19,6 +19,7 @@ import br.com.hammer.controledepedidos.domain.PagamentoComCartao;
 import br.com.hammer.controledepedidos.domain.Pedido;
 import br.com.hammer.controledepedidos.domain.Produto;
 import br.com.hammer.controledepedidos.domain.enums.EstadoPagamento;
+import br.com.hammer.controledepedidos.domain.enums.Perfil;
 import br.com.hammer.controledepedidos.domain.enums.TipoCliente;
 import br.com.hammer.controledepedidos.repositories.CategoriaRepository;
 import br.com.hammer.controledepedidos.repositories.CidadeRepository;
@@ -126,15 +127,24 @@ public class DBService {
 		cidadeRepository.save(Arrays.asList(bhCity, spCity, cmpCity));
 
 		Cliente maria = new Cliente(null, "Bruno Rodrigues", "brunorodrigues.tec.info@gmail.com", "56689974442", TipoCliente.PESSOAFISICA, pe.encode("123") );
+		Cliente jose = new Cliente(null, "Jose Rodrigues", "brunorodrigues.tec.info@gmail.com", "31628382740", TipoCliente.PESSOAFISICA, pe.encode("123") );
+		jose.addPerfil(Perfil.ADMIN);
+		maria.addPerfil(Perfil.CLIENTE);
 		maria.getTelefones().addAll(Arrays.asList("+55 11 988776655", "+55 11 987654321"));
+		jose.getTelefones().addAll(Arrays.asList("+55 11 988776644", "+55 11 987654345"));
 
 		Endereco residencia = new Endereco(null, "Rua Santa Rita", "239", "Casa 2", "Vila Ubirajara", "11850000",maria, bhCity);
 		Endereco trabalho = new Endereco(null, "Av da Saudade", "1500", "Casa 29", "Centro", "11850000",maria, bhCity);
 
+		Endereco joseEn = new Endereco(null, "Rua Santa Maria", "239", "Casa 2", "Vila Ubirajara", "11850000",jose, bhCity);
+		Endereco joseEnTr = new Endereco(null, "Av dos Amantes", "1500", "Casa 29", "Centro", "11850000",jose, bhCity);
+		
 		maria.getEnderecos().addAll(Arrays.asList(residencia, trabalho));
+		jose.getEnderecos().addAll(Arrays.asList(joseEn, joseEnTr));
 
-		clienteRepository.save(Arrays.asList(maria));
-		enderecoRepository.save(Arrays.asList(residencia, trabalho));
+		clienteRepository.save(Arrays.asList(maria, jose));
+		enderecoRepository.save(Arrays.asList(residencia, trabalho, joseEn, joseEnTr));
+
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), maria, residencia);
