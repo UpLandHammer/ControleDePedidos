@@ -14,11 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.hammer.controledepedidos.domain.Cidade;
 import br.com.hammer.controledepedidos.domain.Cliente;
 import br.com.hammer.controledepedidos.domain.Endereco;
+import br.com.hammer.controledepedidos.domain.enums.Perfil;
 import br.com.hammer.controledepedidos.domain.enums.TipoCliente;
 import br.com.hammer.controledepedidos.dto.ClienteDTO;
 import br.com.hammer.controledepedidos.dto.ClienteNewDTO;
 import br.com.hammer.controledepedidos.repositories.ClienteRepository;
 import br.com.hammer.controledepedidos.repositories.EnderecoRepository;
+import br.com.hammer.controledepedidos.security.UserSS;
+import br.com.hammer.controledepedidos.services.exceptions.AuthorizationException;
 import br.com.hammer.controledepedidos.services.exceptions.DataIntegrityException;
 import br.com.hammer.controledepedidos.services.exceptions.ObjectNotFoundException;
 
@@ -35,6 +38,12 @@ public class ClienteService {
 	private EnderecoRepository enderecoRepository;
 
 	public Cliente find(Integer id) {
+
+		UserSS user = UserService.authenticated();
+		if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
 		Cliente dados = repository.findOne(id);
 			if(dados == null) {
 				throw new ObjectNotFoundException("Objeto não encontrado! Id:" + id 
