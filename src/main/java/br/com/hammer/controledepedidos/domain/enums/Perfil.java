@@ -33,7 +33,7 @@ public enum Perfil {
 			}
 		}
 
-		throw new IllegalArgumentException();
+		throw new IllegalArgumentException("Id Inválido: " + cod);
 	}
 
 }

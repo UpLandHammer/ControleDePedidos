@@ -127,11 +127,11 @@ public class DBService {
 		cidadeRepository.save(Arrays.asList(bhCity, spCity, cmpCity));
 
 		Cliente maria = new Cliente(null, "Bruno Rodrigues", "brunorodrigues.tec.info@gmail.com", "56689974442", TipoCliente.PESSOAFISICA, pe.encode("123") );
-		Cliente jose = new Cliente(null, "Jose Rodrigues", "brunorodrigues.tec.info@gmail.com", "31628382740", TipoCliente.PESSOAFISICA, pe.encode("123") );
-		jose.addPerfil(Perfil.ADMIN);
-		maria.addPerfil(Perfil.CLIENTE);
 		maria.getTelefones().addAll(Arrays.asList("+55 11 988776655", "+55 11 987654321"));
+		Cliente jose = new Cliente(null, "Jose Rodrigues", "rodrigues.servico@gmail.com", "31628382740", TipoCliente.PESSOAFISICA, pe.encode("123") );
 		jose.getTelefones().addAll(Arrays.asList("+55 11 988776644", "+55 11 987654345"));
+
+		jose.addPerfil(Perfil.ADMIN);
 
 		Endereco residencia = new Endereco(null, "Rua Santa Rita", "239", "Casa 2", "Vila Ubirajara", "11850000",maria, bhCity);
 		Endereco trabalho = new Endereco(null, "Av da Saudade", "1500", "Casa 29", "Centro", "11850000",maria, bhCity);
